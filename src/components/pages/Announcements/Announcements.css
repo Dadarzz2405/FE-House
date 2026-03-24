@@ -1,112 +1,134 @@
-h1 {
-  text-align: center;
-  margin: 40px 0 20px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: #003876;
-}
-
-.announce-card {
-  position: relative;
-  margin: 30px auto;
-  border-radius: 14px;
-  border: none;
-  background: linear-gradient(145deg, #ffffff, #f3f3f3);
-  box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.12),
-    0 2px 6px rgba(0, 0, 0, 0.08);
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
-  overflow: hidden;
-}
-
-.announce-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow:
-    0 18px 40px rgba(0, 0, 0, 0.18),
-    0 6px 12px rgba(0, 0, 0, 0.12);
-}
-
-.announce-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 6px;
+.announcement {
   width: 100%;
-  background: linear-gradient(90deg, #003876, #D4AF37);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.announce-card .card-body {
-  padding: 18px;
-}
-
-.announce-card .card-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #003876;
-}
-
-.announce-card .card-text {
-  font-size: 0.85rem;
-  color: #555;
-  margin-bottom: 6px;
-  line-height: 1.4;
-}
-
-.announce-card .card-text:last-of-type {
-  font-size: 0.75rem;
-  color: #888;
-}
-
-.announcement-image {
-  margin: 1rem 0;
+.announcement h1 {
   text-align: center;
+  font-weight: 600;
+  margin-top: 80px;
+  letter-spacing: 0.5px;
 }
 
-.announcement-img {
-  max-width: 100%;
-  max-height: 400px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.announcement .headings {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.announcement-date {
-  font-size: 0.75rem;
-  color: #888;
-  margin-top: 0.5rem;
+.announcement .headings .events {
+  width: 625px;
 }
 
-.announce-card .list-group-item {
-  font-size: 0.75rem;
-  padding: 8px 14px;
+.announcement .headings .announcements {
+  width: 500px;
+}
+
+.announcement .content-container {
+  width: 80%;
+  height: 50vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+/* Event */
+.announcement .event-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 600px;
+  height: 100%;
+  margin-right: 5px;
+}
+
+.announcement .event-frame {
+  width: 100%;
+  height: 100%;
+  background-color: gainsboro;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.announcement .event-frame .events {
+  display: flex;
+  position: absolute;
+}
+
+.announcement .event-frame .event {
+  height: 50vh;
+  background-color: aquamarine;
+}
+
+.announcement .event-frame .left-btn,
+.announcement .event-frame .right-btn {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  z-index: 99;
+  background-color: rgba(48, 48, 48, 0.2);
   border: none;
-  background: transparent;
-  color: #444;
+  color: #ffff;
+  font-size: 300;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.announce-card .list-group {
-  border-top: 1px solid rgba(0, 56, 118, 0.1);
+.announcement .event-frame .left-btn:active,
+.announcement .event-frame .right-btn:active {
+  background-color: rgba(48, 48, 48, 0.05);
 }
 
-.announce-card .list-group-item:last-child {
-  font-weight: 500;
-  color: #003876;
+.announcement .event-frame .left-btn {
+  left: 20px;
 }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.announcement .event-frame .right-btn {
+  right: 20px;
 }
 
-.announce-card {
-  animation: fadeUp 0.6s ease both;
+/* ===================================== */
+
+.announcement .announces-display {
+  width: 500px;
+  height: 50vh;
+}
+
+.announcement .announces-group {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  position: relative;
+  border-left: #000 1px solid;
+}
+
+.announcement .announces-group .announces-back {
+  background: linear-gradient(90deg, #000, #000, #00000000);
+  width: 100%;
+  height: max-content;
+}
+
+.announcement .announce-card {
+  width: 100%;
+}
+
+.announcement .announce-card .card {
+  width: 100% !important;
+  margin-bottom: 0.5px;
+  border-radius: 0;
+  padding: 10px;
+}
+
+.announcement .announce-card div {
+  border: none;
+  margin: 0;
+  padding: 0;
 }
