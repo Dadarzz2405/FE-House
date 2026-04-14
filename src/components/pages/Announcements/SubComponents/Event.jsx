@@ -7,57 +7,49 @@ const Event = () => {
 
   useEffect(() => {
     events.current.style.width = `${100 * maxEvent}%`;
-    const event = document.querySelectorAll(
-      ".announcement .event-frame .event",
-    );
+    const event = events.current.querySelectorAll(".event-slide");
     event.forEach((e) => {
       e.style.width = `${100 / maxEvent}%`;
     });
-  }, [maxEvent]);
+  }, []);
 
   useEffect(() => {
     events.current.style.left = `${-100 * (activeEvent - 1)}%`;
     events.current.style.right = `${100 * (activeEvent - 1)}%`;
-    events.current.style.transition = `all .5s ease-in-out`;
+    events.current.style.transition = "all .5s ease-in-out";
   }, [activeEvent]);
 
-  const leftClick = () => {
-    let nextActive = activeEvent - 1;
-    if (nextActive < 1) {
-      return;
-    }
-    setActiveEvent(nextActive);
-  };
-
-  const rightClick = () => {
-    let nextActive = activeEvent + 1;
-    if (nextActive > maxEvent) {
-      return;
-    }
-    setActiveEvent(nextActive);
-  };
+  const leftClick = () => activeEvent > 1 && setActiveEvent(activeEvent - 1);
+  const rightClick = () =>
+    activeEvent < maxEvent && setActiveEvent(activeEvent + 1);
 
   return (
-    <div className="event-container">
-      <div className="event-frame">
+    <div className="flex flex-col justify-between w-[600px] h-full mr-1">
+      <div className="w-full h-full bg-gray-200 rounded-[20px] overflow-hidden relative">
         {activeEvent > 1 && (
-          <button onClick={leftClick} className="left-btn">
+          <button
+            onClick={leftClick}
+            className="absolute w-[30px] h-[30px] rounded-full z-[99] bg-black/20 border-none text-white flex justify-center items-center top-1/2 -translate-y-1/2 left-5"
+          >
             {"<"}
           </button>
         )}
         {activeEvent < maxEvent && (
-          <button onClick={rightClick} className="right-btn">
+          <button
+            onClick={rightClick}
+            className="absolute w-[30px] h-[30px] rounded-full z-[99] bg-black/20 border-none text-white flex justify-center items-center top-1/2 -translate-y-1/2 right-5"
+          >
             {">"}
           </button>
         )}
-        <div className="events" ref={events}>
-          <div className="event event1">
+        <div className="flex absolute" ref={events}>
+          <div className="event-slide h-[50vh] bg-teal-300 flex items-center justify-center">
             <h2>Event 1</h2>
           </div>
-          <div className="event event2">
+          <div className="event-slide h-[50vh] bg-blue-300 flex items-center justify-center">
             <h2>Event 2</h2>
           </div>
-          <div className="event event3">
+          <div className="event-slide h-[50vh] bg-green-300 flex items-center justify-center">
             <h2>Event 3</h2>
           </div>
         </div>

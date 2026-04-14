@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../../API/axios";
-import "./CaptainDashboard.css";
 
 const CaptainDashboard = () => {
   const [houseData, setHouseData] = useState(null);
@@ -18,29 +17,27 @@ const CaptainDashboard = () => {
 
   const checkAuth = async () => {
     try {
-      const response = await api.get('/api/me');
+      const response = await api.get("/api/me");
       setCurrentUser(response.data);
-      if (response.data.role !== 'captain') {
-        navigate('/login');
+      if (response.data.role !== "captain") {
+        navigate("/login");
         return;
       }
       loadDashboardData();
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      navigate('/login');
+    } catch {
+      navigate("/login");
     }
   };
 
   const loadDashboardData = async () => {
     try {
-      const response = await api.get('/api/captain/dashboard');
+      const response = await api.get("/api/captain/dashboard");
       setHouseData(response.data.house);
       setMembers(response.data.members);
       setMyAnnouncements(response.data.my_announcements);
-      setLoading(false);
-    } catch (error) {
-      console.error('Failed to load dashboard:', error);
-      showAlert('Failed to load dashboard data', 'danger');
+    } catch {
+      showAlert("Failed to load dashboard data", "danger");
+    } finally {
       setLoading(false);
     }
   };
@@ -50,138 +47,162 @@ const CaptainDashboard = () => {
     setTimeout(() => setAlert(null), 5000);
   };
 
-  const handleDeleteAnnouncement = async (announcementId) => {
-    if (!window.confirm('Are you sure you want to delete this announcement?')) {
-      return;
-    }
-
+  const handleDeleteAnnouncement = async (id) => {
+    if (!window.confirm("Delete this announcement?")) return;
     try {
-      await api.delete(`/api/captain/announcements/${announcementId}/delete`);
-      showAlert('Announcement deleted successfully', 'success');
+      await api.delete(`/api/captain/announcements/${id}/delete`);
+      showAlert("Announcement deleted successfully", "success");
       loadDashboardData();
     } catch (error) {
-      console.error('Error deleting announcement:', error);
-      showAlert(error.response?.data?.error || 'Failed to delete announcement', 'danger');
+      showAlert(error.response?.data?.error || "Failed to delete", "danger");
     }
   };
 
   const handleLogout = async () => {
     try {
-      await api.post('/api/logout');
-      navigate('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-      navigate('/login');
-    }
+      await api.post("/api/logout");
+    } catch {}
+    navigate("/login");
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <h2>Loading...</h2>
+      <div className="flex justify-center items-center min-h-screen">
+        <h2 className="text-[#003876]">Loading...</h2>
       </div>
     );
-  }
+
+  const cardClass = "bg-white rounded-xl shadow p-6 mb-8";
 
   return (
     <div>
-      <nav className="navbar-custom">
-        <a href="#" className="navbar-brand">
+      {/* Navbar */}
+      <nav className="bg-[#003876] flex justify-between items-center px-8 py-4 shadow">
+        <a href="#" className="text-white font-bold text-xl">
           🎖️ Captain Dashboard
         </a>
-        <div className="navbar-right">
-          <span className="navbar-text">
-            Welcome, <strong>{currentUser?.name || 'Captain'}</strong>
+        <div className="flex items-center gap-4">
+          <span className="text-white">
+            Welcome, <strong>{currentUser?.name || "Captain"}</strong>
           </span>
-          <button onClick={handleLogout} className="btn-logout">
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+          >
             Logout
           </button>
         </div>
       </nav>
 
-      <div className="dashboard-container">
+      <div className="max-w-[1400px] mx-auto px-4 my-8">
+        {/* House Banner */}
         {houseData && (
-          <div className="house-banner">
-            <h2>{houseData.name}</h2>
-            <div className="house-points">{houseData.points}</div>
-            <p>Total House Points</p>
-            <p className="house-description">{houseData.description}</p>
+          <div className="bg-gradient-to-br from-[#003876] to-[#005ca8] text-white p-12 rounded-xl text-center mb-8 shadow-lg">
+            <h2 className="text-4xl font-bold text-[#D4AF37] mb-4">
+              {houseData.name}
+            </h2>
+            <div className="text-6xl font-bold">{houseData.points}</div>
+            <p className="mt-2 opacity-90">Total House Points</p>
+            <p className="mt-4 text-lg opacity-80">{houseData.description}</p>
           </div>
         )}
 
         {alert && (
-          <div className={`alert alert-${alert.type}`}>
+          <div
+            className={`p-4 rounded-lg mb-6 border ${alert.type === "success" ? "bg-green-50 border-green-300 text-green-800" : "bg-red-50 border-red-300 text-red-800"}`}
+          >
             {alert.message}
           </div>
         )}
 
-        <div className="dashboard-grid">
-          <div className="card-custom">
-            <h2 className="card-title">👥 House Members</h2>
-            
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Members */}
+          <div className={cardClass}>
+            <h2 className="text-[#003876] font-bold text-xl mb-6 pb-3 border-b-2 border-[#D4AF37]">
+              👥 House Members
+            </h2>
             {members.length > 0 ? (
-              <div className="members-grid">
+              <div className="grid grid-cols-2 gap-4">
                 {members.map((member) => (
-                  <div key={member.id} className="member-card">
-                    <div className="member-name">{member.name}</div>
-                    <div className="member-role">{member.role}</div>
+                  <div
+                    key={member.id}
+                    className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg text-center border-2 border-gray-200 hover:border-[#003876] hover:-translate-y-0.5 transition-all"
+                  >
+                    <div className="font-bold text-[#003876]">
+                      {member.name}
+                    </div>
+                    <div className="text-gray-500 text-sm capitalize">
+                      {member.role}
+                    </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="no-content">No members in your house yet</div>
+              <p className="text-center text-gray-400 italic py-8">
+                No members in your house yet
+              </p>
             )}
           </div>
 
-          <div className="card-custom">
-            <h2 className="card-title">⚡ Quick Actions</h2>
-            <button 
-              onClick={() => navigate('/createann')}
-              className="btn-create"
+          {/* Quick Actions */}
+          <div className={cardClass}>
+            <h2 className="text-[#003876] font-bold text-xl mb-6 pb-3 border-b-2 border-[#D4AF37]">
+              ⚡ Quick Actions
+            </h2>
+            <button
+              onClick={() => navigate("/createann")}
+              className="w-full py-4 bg-[#003876] hover:bg-[#005ca8] text-white rounded-lg font-bold text-lg transition-all hover:-translate-y-0.5 hover:shadow-lg"
             >
               📢 Create New Announcement
             </button>
-            <p className="text-muted" style={{ marginTop: '1rem' }}>
-              Create announcements to communicate with your house members and the entire school.
+            <p className="text-gray-500 text-sm mt-4">
+              Create announcements to communicate with your house members and
+              the entire school.
             </p>
           </div>
 
-          <div className="card-custom full-width">
-            <h2 className="card-title">📢 My Announcements</h2>
-            
+          {/* My Announcements */}
+          <div className="bg-white rounded-xl shadow p-6 mb-8 lg:col-span-2">
+            <h2 className="text-[#003876] font-bold text-xl mb-6 pb-3 border-b-2 border-[#D4AF37]">
+              📢 My Announcements
+            </h2>
             {myAnnouncements.length > 0 ? (
-              myAnnouncements.map((announcement) => (
-                <div key={announcement.id} className="announcement-card">
-                  <div className="announcement-header">
+              myAnnouncements.map((ann) => (
+                <div
+                  key={ann.id}
+                  className="bg-gray-50 p-6 rounded-lg mb-4 border-l-4 border-[#003876]"
+                >
+                  <div className="flex justify-between items-start mb-4">
                     <div>
-                      <div className="announcement-title">{announcement.title}</div>
-                      <div className="announcement-date">
-                        {new Date(announcement.created_at).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
+                      <div className="text-xl font-bold text-[#003876]">
+                        {ann.title}
+                      </div>
+                      <div className="text-gray-400 text-sm">
+                        {new Date(ann.created_at).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
                         })}
                       </div>
                     </div>
-                    <button 
-                      onClick={() => handleDeleteAnnouncement(announcement.id)}
-                      className="btn-delete"
+                    <button
+                      onClick={() => handleDeleteAnnouncement(ann.id)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg text-sm hover:-translate-y-0.5 transition-all"
                     >
                       🗑️ Delete
                     </button>
                   </div>
-                  <div className="announcement-content">{announcement.content}</div>
-                  
-                  {announcement.image_url && (
-                    <div className="announcement-image-container">
-                      <img 
-                        src={announcement.image_url} 
-                        alt="Announcement" 
-                        className="announcement-image"
+                  <p className="text-gray-700 leading-relaxed">{ann.content}</p>
+                  {ann.image_url && (
+                    <div className="mt-4 text-center">
+                      <img
+                        src={ann.image_url}
+                        alt="Announcement"
+                        className="max-w-full max-h-[400px] rounded-lg shadow"
                         onError={(e) => {
-                          e.target.style.display = 'none';
+                          e.target.style.display = "none";
                         }}
                       />
                     </div>
@@ -189,13 +210,11 @@ const CaptainDashboard = () => {
                 </div>
               ))
             ) : (
-              <div className="no-content">
-                You haven't posted any announcements yet
-                <br />
-                <button 
-                  onClick={() => navigate('/create-announcement')}
-                  className="btn-create" 
-                  style={{ marginTop: '1rem' }}
+              <div className="text-center text-gray-400 italic py-8">
+                <p>You haven't posted any announcements yet</p>
+                <button
+                  onClick={() => navigate("/createann")}
+                  className="mt-4 w-full py-4 bg-[#003876] hover:bg-[#005ca8] text-white rounded-lg font-bold transition-all"
                 >
                   Create Your First Announcement
                 </button>
