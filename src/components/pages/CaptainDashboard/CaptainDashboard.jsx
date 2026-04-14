@@ -50,7 +50,7 @@ const CaptainDashboard = () => {
   const handleDeleteAnnouncement = async (id) => {
     if (!window.confirm("Delete this announcement?")) return;
     try {
-      await api.delete(`/api/captain/announcements/${id}/delete`);
+      await api.delete(`/api/captain/announcements/${id}`);
       showAlert("Announcement deleted successfully", "success");
       loadDashboardData();
     } catch (error) {
