@@ -23,7 +23,7 @@ const Announcements = () => {
               name: a.captain?.name ?? "Unknown",
               username: a.captain?.username ?? "-",
             },
-          }))
+          })),
         );
       } catch (error) {
         console.error("Error fetching announcements:", error);
@@ -45,7 +45,7 @@ const Announcements = () => {
       </div>
       <div className="w-4/5 h-[50vh] flex justify-between items-start">
         <Event />
-        <AnnoucesDisplay announcements={announce} loading={loading} />
+        <AnnoucesDisplay />
       </div>
     </div>
   );

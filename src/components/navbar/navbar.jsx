@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../../Assets/LogoSchool/Full_COLOR.png";
 
 const NavbarContainer = ({ activatedPage }) => {
   const [open, setOpen] = useState(false);
@@ -12,7 +13,7 @@ const NavbarContainer = ({ activatedPage }) => {
     }`;
 
   return (
-    <nav className="fixed backdrop-blur-md bg-dark border-b border-white/10 h-[60px] flex items-center justify-between px-6 z-9999 right-0 left-0">
+    <nav className="fixed backdrop-blur-md bg-dark border-b border-white/10 h-[60px] flex items-center justify-between px-6 z-[9999] right-0 left-0">
       {/* Brand */}
       <a
         href="https://gda.sch.id"
@@ -61,7 +62,7 @@ const NavbarContainer = ({ activatedPage }) => {
 
       {/* Mobile menu */}
       {open && (
-        <div className="absolute top-[50px] left-0 w-full bg-dark border-b border-white/10 flex flex-col gap-1 p-4 md:hidden z-50">
+        <div className="absolute top-[50px] left-0 w-full bg-[#0f0f0f] border-b border-white/10 flex flex-col gap-1 p-4 md:hidden z-50">
           <Link
             to="/"
             className={linkClass("/")}
