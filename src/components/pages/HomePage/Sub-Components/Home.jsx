@@ -118,7 +118,7 @@ function Home() {
     <div className="h-screen w-[100%] h-[100vh] flex justify-center items-center bg-[linear-gradient(to_bottom_left,#0a0f2c,var(--color-dark))] overflow-hidden relative">
       {logoNames.map((logo, index) => (
         <div
-          className="absolute bottom-[-100px] left-[-100px] w-[400px] h-[400px] transition-all duration-1000 pointer-events-none"
+          className="absolute bottom-[-150px] left-[-150px] w-[400px] h-[400px] transition-all duration-1000 pointer-events-none"
           key={index}
           ref={(el) => (lightRefs.current[index] = el)}
           style={{
